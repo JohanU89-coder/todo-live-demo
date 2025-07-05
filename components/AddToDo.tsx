@@ -1,8 +1,8 @@
 "use client";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react"; // 'use' fue eliminado porque no se estaba utilizando.
 import { createClient } from "@/lib/supabase/client";
 import { User } from "@supabase/supabase-js";
-import { exportPages } from "next/dist/export/worker";
+// Se eliminó la importación innecesaria y errónea: import { exportPages } from "next/dist/export/worker";
 
 type AddToDoProps = {
     onAdd?: () => void;
@@ -33,6 +33,7 @@ export default function AddToDo({ onAdd }: AddToDoProps) {
         return; 
       }
 
+      // La validación coincide con la regla de la base de datos: CHECK(char_length(task) > 3)
       if (task.length < 4) {
         setError("Task must be at least 4 characters long.");
         return;
@@ -51,7 +52,7 @@ export default function AddToDo({ onAdd }: AddToDoProps) {
         }
 
         setTask("");
-        if (onAdd) onAdd(); // Call the onAdd callback if provided
+        if (onAdd) onAdd(); // Llama al callback del padre para refrescar la lista
       }catch (err) {
         setError(err instanceof Error ? err.message : "Failed to add todo");
       } finally {
@@ -74,7 +75,8 @@ export default function AddToDo({ onAdd }: AddToDoProps) {
                 value={task}
                 onChange={(e) => setTask(e.target.value)}
                 placeholder="Add a new task"
-                className="flex-1 px4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                // CORRECCIÓN: Se cambió 'px4' por 'px-4' para que Tailwind CSS lo reconozca.
+                className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 disabled={loading}
                 />
                 <button
